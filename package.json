@@ -1,6 +1,5 @@
 {
   "name": "flow-work",
-  "private": true,
   "version": "0.0.0-alpha",
   "main": "./src/index.ts",
   "scripts": {
