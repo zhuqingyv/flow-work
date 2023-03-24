@@ -1,7 +1,7 @@
 {
   "name": "flow-work",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.0-alpha",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
