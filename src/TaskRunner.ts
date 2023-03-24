@@ -1,13 +1,6 @@
 import FlowCore from "./FlowCore";
 import Flow from "./";
-
-interface Task {
-  taskName: string;
-  _task: Function;
-
-  pre?:Task | null;
-  next?:Task | null;
-}
+import { TaskType } from "./types";
 
 class TaskRunner {
   name:string | null = null;
@@ -16,8 +9,8 @@ class TaskRunner {
   pre:TaskRunner | null = null;
 
   taskList = new Map();
-  first:Task | null = null;
-  current:Task | null = null;
+  first:TaskType | null = null;
+  current:TaskType | null = null;
   dispatch: Function;
 
   constructor(name:string, flow:Flow) {
@@ -27,7 +20,7 @@ class TaskRunner {
   };
 
   run = (taskName:string, _task:Function) => {
-    const task:Task = { taskName, _task };
+    const task:TaskType = { taskName, _task, name: taskName };
     this.taskList.set(taskName, task);
 
     if (this.first === null) this.first = task;
@@ -52,7 +45,7 @@ class TaskRunner {
     finished()
   };
 
-  runTask = (task:Task, data:unknown, finished: Function):void => {
+  runTask = (task:TaskType, data:unknown, finished: Function):void => {
     const { taskName, _task, next} = task;
     this.dispatch('run', { runner: this, task, data });
     let over = false;

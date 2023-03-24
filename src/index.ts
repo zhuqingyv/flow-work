@@ -1,20 +1,13 @@
 import TaskRunner from "./TaskRunner";
 import FlowCore from "./FlowCore";
-import { InterceptType } from "./types";
-
-interface InterfaceOptions {
-  'register'?:Function;
-  'run'?:Function;
-  'error'?:Function;
-  'call'?:Function;
-};
+import { InterceptType, InterfaceOptionsType } from "./types";
 
 class Flow extends FlowCore {
   [x: string]: any;
   firstRunner:TaskRunner | null = null;
   currentRunner:TaskRunner | null = null;
   runnerMap = new Map();
-  interceptOptions:InterfaceOptions | null = null;
+  interceptOptions:InterfaceOptionsType | null = null;
 
   constructor(name:string) {
     super();
@@ -33,11 +26,11 @@ class Flow extends FlowCore {
     return {
       run: runner.run,
       tap: this.tap
-    }
+    };
   };
 
-  intercept = (options:any = null) => {
-    this.interceptOptions = options;
+  intercept = (options?:InterfaceOptionsType) => {
+    if (options) this.interceptOptions = options;
   };
 
   call = (data:any, finished:Function) => {
@@ -59,3 +52,7 @@ class Flow extends FlowCore {
 };
 
 export default Flow;
+
+export const workFlow = (name:string) => {
+  return new Flow(name);
+};

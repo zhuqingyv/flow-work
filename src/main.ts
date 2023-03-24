@@ -1,13 +1,12 @@
 import './style.css';
-import Flow from './index';
-
+import { workFlow } from './index';
 const app = document.querySelector<HTMLDivElement>('#app')!
 
 app.innerHTML = `
   <h1>Hello Vite!</h1>
   <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
 `
-const flow = new Flow('test');
+const flow = workFlow('test');
 
 flow
   .tap('init')
@@ -20,7 +19,7 @@ flow
     setTimeout(() => {
       next(data);
     }, 1000);
-  })
+  });
 
 flow
   .tap('render')
@@ -41,7 +40,16 @@ flow
   })
 
 flow.intercept({
-  run: () => {}
+  run: (event) => {
+    const { runner, task, data } = event;
+    console.log(`${task.taskName} => ${runner.name}`, data);
+  },
+  register: ({ runner }) => {
+    console.log('register', runner);
+  },
+  call: (event) => {
+    console.log('call', event.flow);
+  }
 })
 
 flow.call('example', (lastTaskName:string, error:any) => {
